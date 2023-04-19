@@ -1,0 +1,174 @@
+local pos_self = function(role)
+	return function()
+		return player.pos(role)
+	end
+end
+local dir_self = function(role1,role2)
+	return function()
+		return (player.pos(role2) - player.pos(role1)):dir()
+	end
+end
+
+local dir_ball = function(role)
+	return function()
+		return (ball.pos() - player.pos(role)):dir()
+	end
+end
+
+DefinePos = {
+	CGeoPoint:new_local(0,0),
+}
+
+
+--坐标 CGeoPoint:new_local(0,0)
+--方向 dir
+
+position = CGeoPoint:new_local(15,2100)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+gPlayTable.CreatePlay{
+firstState = "test",
+--role   使用这个函数的角色
+--p	     等待位置
+
+
+
+["test"] = {
+	switch = function()
+
+	end,
+	Assister = task.goCmuRush(CGeoPoint:new_local(0,0),math.pi,2000),
+	Kicker = task.stop(),
+	match = "[AK]"
+
+	--{}  []   ()
+},
+
+
+
+
+
+["ini"] = {
+	switch = function()
+		if player.infraredCount("Assister") > 10 then
+			return "PassballToKicker"
+		end
+	end,
+	Assister = task.GetBallV2("Assister",pos_self("Kicker") ,100,500),
+	Kicker = task.goCmuRush(pos_self("Kicker"),dir_self("Kicker","Assister")),
+	Tier = task.stop(),
+	match = "{AKT}"
+},
+["PassballToKicker"] = {
+	switch = function()
+		if player.kickBall("Assister") then
+			return "GetballKicker"
+		end
+	end,
+	Assister = task.shoot(ball.pos(),dir_self("Assister","Kicker"),_,5000),
+	Kicker = task.goCmuRush(pos_self("Kicker"),dir_self("Kicker","Assister")),
+	Tier = task.stop(),
+	match = "{AKT}"
+},
+
+
+
+["GetballKicker"] = {
+	switch = function()
+		if player.infraredCount("Kicker") > 10 then
+			return "PassballToTier"
+		end
+	end,
+	Assister = task.stop(),
+	Kicker = task.Getballv4("Kicker",pos_self("Kicker")),
+	Tier = task.stop(),
+	match = "{AKT}"
+},
+
+
+
+["PassballToTier"] = {
+	switch = function()
+		if player.kickBall("Kicker") then
+			return "GetballTier"
+		end
+	end,
+	Assister = task.stop(),
+	Kicker = task.shoot(ball.pos(),dir_self("Kicker","Tier"),_,5000),
+	Tier = task.goCmuRush(pos_self("Tier"),dir_self("Tier","Kicker")),
+	match = "{AKT}"
+},
+
+["GetballTier"] = {
+	switch = function()
+		if player.infraredCount("Tier") > 10 then
+			return "PassballToAssister"
+		end
+	end,
+	Assister = task.stop(),
+	Kicker = task.stop(),
+	Tier = task.Getballv4("Tier",pos_self("Tier")),
+	match = "{AKT}"
+},
+
+
+["PassballToAssister"] = {
+	switch = function()
+		if player.kickBall("Tier") then
+			return "GetballAssister"
+		end
+	end,
+	Assister = task.goCmuRush(pos_self("Assister"),dir_self("Assister","Tier")),
+	Kicker = task.stop(),
+	Tier = task.shoot(ball.pos(),dir_self("Tier","Assister"),_,5000),
+	match = "{AKT}"
+},
+
+["GetballAssister"] = {
+	switch = function()
+		if player.infraredCount("Assister") > 10 then
+			return "ini"
+		end
+	end,
+	Assister = task.Getballv4("Assister",pos_self("Assister")),
+	Kicker = task.stop(),
+	Tier = task.stop(),
+	match = "{AKT}"
+},
+
+
+name = "EazyDefend",
+applicable ={
+	exp = "a",
+	a = true
+},
+attribute = "attack",
+timeout = 99999
+}
