@@ -13,17 +13,17 @@
 
 2023 0411
 
-    1.抄袭player.canflatpass() 在task写了一个 between_dotV2(dot1,dot2,r) 效果很好 解决了 之前版本卡顿的问题
+       1.抄袭player.canflatpass() 在task写了一个 between_dotV2(dot1,dot2,r) 效果很好 解决了 之前版本卡顿的问题
     
-    2.Confidence_pass(role) 加了一些影响因子 
+       2.Confidence_pass(role) 加了一些影响因子 
     
-    --------Umbrella
+       --------Umbrella
 
 2023 0414
 
-    1.优化了 grade_dir_goal 让其更合理 准备开始写Confidence_shoot了
+       1.优化了 grade_dir_goal 让其更合理 准备开始写Confidence_shoot了
     
-    --------Umbrella
+       --------Umbrella
 
 2023 0424
 
