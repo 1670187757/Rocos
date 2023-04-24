@@ -17,4 +17,14 @@
 
 2023 0414
 
-    3.优化了 grade_dir_goal 让其更合理 准备开始写Confidence_shoot了
+    1.优化了 grade_dir_goal 让其更合理 准备开始写Confidence_shoot了
+
+2023 0424
+       1.优化了GetballV3的旋转方向与旋转朝向 详细如下：
+       关于旋转朝向问题：
+       
+       我们在task.ShowTimeV1_ini(role) 里面添加了StartPos and StartPosBall 作为player触摸到球的初始点与球第一次被触摸时的初始位置
+       
+       因为之前 GetballV3 的player的朝向始终指向球 导致 球的位置偏移后会不断的累积误差，
+       
+       将(player.pos(role) - ball.pos()):dir() 改成(StartPosBall - player.pos(role)):dir()后效果显著提升！
