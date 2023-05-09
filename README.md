@@ -47,3 +47,30 @@
        后面关于GetballV3的问题只剩下调整参数 其他问题待发现    
        
        --------Wuf Zhoujunjie Umbrella
+       
+
+2023 0428 ～ 0509
+
+       1.我们发现了 GetballV3的新转向bug并将其解决：
+       
+       添加了4个条件判断StartPosBall and StartPos 的xy的相对位置作为转向依据
+       
+       
+       2.完成了 PENALTY 进攻与防守脚本的编写 防守攻有待优化
+       
+       3.为了解决传统goCmuRush近点坐标移动速度过慢的问题，写了一个新的goCmuRushV2将其传入的坐标点为PlayerPos与targetpos的延长线上
+       
+       4. 我们完成了 进攻时状态置信度函数的编写 [PASS,SHOOT,DRBBLING] 它真的很完美
+       
+       在ConfidencePass中我们不仅仅考虑了带球者的角度与接球者的角度 、 是否被敌人遮挡 来衡量分数 
+       
+       甚至还 加入了 
+       
+              4.1 传球线路的安全性motionLineSafety(pos1,pos2) 他是用 接球点与敌人坐标 还有 接球点与发球点
+       
+       的比值来确定安全性的  经过测试 相同的球速下 其不同位置的 安全性比值一样时 其安全程度一样的 （后期还可以以球速为系数动态调整安全阈值）
+       
+              4.2 被传球人的射门概率
+       
+       
+       
